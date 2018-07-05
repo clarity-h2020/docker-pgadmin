@@ -1,36 +1,24 @@
-version: '2'
+version: '3'
 
+volumes:
+  pgadmin4-data:
+      
 services:
-  db:
-    container_name: postgis-10.3-2.4-alpine
-    image: cismet/postgis:10.3-2.4-alpine
-    restart: always
-    network_mode: bridge
-    environment:
-      PGUSER: postgres
-      POSTGRES_PASSWORD: xxx
-      LANG: de_DE.UTF-8
-      LANGUAGE: de_DE:de
-      LC_ALL: de_DE.UTF-8   
-      TZ: Europe/Berlin
-    volumes:
-      - ./postgresql_data:/var/lib/postgresql/data
-      - ./tmp:/tmp
-      - ./files/bash_history:/root/.bash_history
-    ports:
-      - 5433:5432
   pgadmin4:
-    container_name: pgadmin4-for-postgis-10.3-2.4-alpine
+    container_name: pgadmin4
     image: dpage/pgadmin4:snapshot
-    network_mode: bridge
     restart: always
     volumes:
-      - ./pgadmin4_data:/var/lib/pgadmin/
+      - pgadmin4-data:/var/lib/pgadmin/
     environment:
-       - PGADMIN_DEFAULT_EMAIL=pascal.dihe@cismet.de
-       - PGADMIN_DEFAULT_PASSWORD=wouX0EMo8B4a
+       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     links:
-       - db:db
+       - ckan-db:ckan-db
     ports:
       - 5050:5050
 
+networks:
+  default:
+    external:
+      name: ${NETWORK:-webproxy}

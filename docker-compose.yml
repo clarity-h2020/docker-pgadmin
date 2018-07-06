@@ -14,6 +14,7 @@ services:
        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     external_links:
+       - drupal-db:drupal-db
        - ckan-db:ckan-db
     ports:
       - 5050:80

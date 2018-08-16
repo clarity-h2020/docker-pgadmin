@@ -6,7 +6,7 @@ services:
     image: dpage/pgadmin4:snapshot
     restart: always
     volumes:
-      - ${COMPOSE_PROJECT_NAME}_data:/var/lib/pgadmin/
+      - data:/var/lib/pgadmin/
     environment:
        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -19,7 +19,8 @@ services:
       - 5050:443
       
 volumes:
-  ${COMPOSE_PROJECT_NAME}_data:
+    data:
+        name: ${COMPOSE_PROJECT_NAME}_data
 
 networks:
   default:

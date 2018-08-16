@@ -1,25 +1,27 @@
 version: '3'
-
-volumes:
-  pgadmin4-data:
-      
+     
 services:
   pgadmin4:
-    container_name: pgadmin4
+    container_name: ${COMPOSE_PROJECT_NAME}
     image: dpage/pgadmin4:snapshot
     restart: always
     volumes:
-      - pgadmin4-data:/var/lib/pgadmin/
+      - ${COMPOSE_PROJECT_NAME}_data:/var/lib/pgadmin/
     environment:
        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    # container name   
     external_links:
-       - drupal-db:drupal-db
-       - ckan-db:ckan-db
+       - csis-postgis:csis-postgis
+       - ckan-postgis:ckan-postgis
+       - geonode-postgis:geonode-postgis
     ports:
       - 5050:443
+      
+volumes:
+  ${COMPOSE_PROJECT_NAME}_data:
 
 networks:
   default:
     external:
-      name: ${NETWORK:-webproxy}
+      name: ${NETWORK:-clarity}
